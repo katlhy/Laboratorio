@@ -14,14 +14,15 @@ _A simple React Three Fiber + Vite starter with an import-ready CodeSandbox conf
 
 ### Installation
 
+ npm i vite (instala las dependencias)
 ```
-npm install
+//npm install//
 ```
 
 ### Scripts
 
 ```
-npm run dev
+npm run dev (ejecuta programa)
 npm run build
 npm run preview
 npm run sandbox
