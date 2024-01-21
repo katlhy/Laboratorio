@@ -7,25 +7,24 @@ import React, { useEffect, useRef } from 'react'
 import { useGLTF, PerspectiveCamera, useAnimations } from '@react-three/drei'
 
 
-
-const animationGroups ={
+// Definición de grupos y animaciones para el modelo
+const animationGroups = {
   'sillaProf': ['INSTANCE_17_001Action.001'],
-
-  'drone1':['Sketchfab_modelAction','RootAction','Circle.002_0Action','Circle.003_0Action','Circle.004_0Action','Cube.001_0Action','Circle.005_0Action'],
-
-  'drone2':['Sketchfab_model.001Action','Root.001Action','Circle.002_0.001Action','Circle.003_0.001Action','Circle.004_0.001Action','Circle.005_0.001Action','Sphere_0.001Action']
-
+  'drone1': ['Sketchfab_modelAction', 'RootAction', 'Circle.002_0Action', 'Circle.003_0Action', 'Circle.004_0Action', 'Cube.001_0Action', 'Circle.005_0Action'],
+  'drone2': ['Sketchfab_model.001Action', 'Root.001Action', 'Circle.002_0.001Action', 'Circle.003_0.001Action', 'Circle.004_0.001Action', 'Circle.005_0.001Action', 'Sphere_0.001Action']
 }
+
+// Componente principal del modelo
 export default function Model(props) {
-  const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/model.gltf')
-  const { actions } = useAnimations(animations, group)
+  const group = useRef();
+  const { nodes, materials, animations } = useGLTF('/model.gltf');
+  const { actions } = useAnimations(animations, group);
 
-
-  const playActions = function(srtGroup, intTimescale){
-    animationGroups[srtGroup].forEach(function(strAction){
+  // Función para reproducir acciones de animación con control de tiempo
+  const playActions = function (srtGroup, intTimescale) {
+    animationGroups[srtGroup].forEach(function (strAction) {
       const action = actions[strAction];
-  
+
       if (action) {
         action.clampWhenFinished = true;
         action.timeScale = intTimescale;
@@ -34,25 +33,28 @@ export default function Model(props) {
         console.error(`Action "${strAction}" not found.`);
       }
     });
-  
-    if(intTimescale === 1){
-      setTimeout(function(){
+
+    // Si el intTimescale es 1, invertir la animación después de 3000 ms
+    if (intTimescale === 1) {
+      setTimeout(function () {
         playActions(srtGroup, -1);
       }, 3000);
     }
   }
-  
 
-    useEffect(()=>{
-let i=0;
-for(const key in animationGroups){
- setTimeout(function(){ 
-  playActions(key,1);
- 
- },100 * i);
+  // Efecto secundario que se ejecuta después de que el componente se monta
+  useEffect(() => {
+    let i = 0;
+    // Iterar a través de los grupos de animación y programar la reproducción
+    for (const key in animationGroups) {
+      setTimeout(function () {
+        playActions(key, 1);
+      }, 100 * i);
+      i++;
+    }
+  }, []); // El [] asegura que useEffect solo se ejecute una vez después de montar el componente
 
-}
-    },[]);
+
 
   return (
     <group ref={group} {...props} dispose={null}>
