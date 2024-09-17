@@ -2,7 +2,7 @@
 
 _A simple React Three Fiber + Vite starter with an import-ready CodeSandbox config._
 
-![Preview](Laboratorio/public/animacionProyecto.gif)
+![Preview](Laboratorio/public/preview.gif)
 
 ### Resources:
 
